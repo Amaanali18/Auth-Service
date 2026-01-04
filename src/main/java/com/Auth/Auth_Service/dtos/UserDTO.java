@@ -1,4 +1,5 @@
 package com.Auth.Auth_Service.dtos;
+import com.Auth.Auth_Service.entities.Provider;
 import lombok.*;
 
 import java.util.HashSet;
@@ -14,5 +15,6 @@ public class UserDTO {
     private UUID id;
     private String email;
     private String password;
+    private Provider provider = Provider.LOCAL;
     private Set<RoleDTO> roles = new HashSet<>();
 }
