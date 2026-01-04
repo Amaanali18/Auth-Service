@@ -14,6 +14,7 @@ import java.util.UUID;
 public class UserDTO {
     private UUID id;
     private String email;
+    private String username;
     private String password;
     private Provider provider = Provider.LOCAL;
     private Set<RoleDTO> roles = new HashSet<>();
