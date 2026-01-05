@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(String user_id) {
-        return null;
+        UserDTO userDTO = null;
+        return userDTO;
     }
 
     @Override
