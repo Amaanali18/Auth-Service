@@ -3,11 +3,16 @@ package com.Auth.Auth_Service.services;
 import com.Auth.Auth_Service.dtos.UserDTO;
 import com.Auth.Auth_Service.entities.Provider;
 import com.Auth.Auth_Service.entities.User;
+import com.Auth.Auth_Service.exceptions.ResourceNotFound;
+import com.Auth.Auth_Service.helpers.userHelper;
 import com.Auth.Auth_Service.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         if(userDTO.getEmail()==null || userDTO.getEmail().isEmpty()){
             throw new IllegalArgumentException("Email is required");
@@ -32,26 +38,35 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByEmail(String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFound("User not found"));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
     public UserDTO updateUser(UserDTO userDTO, String user_id) {
-        return null;
+        UUID userId = userHelper.parseUUID(user_id);
+        User existingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (userDTO.getUsername() != null) existingUser.setUsername(userDTO.getUsername());
+        if (userDTO.getPassword() != null) existingUser.setPassword(userDTO.getPassword());
+        User savedUser = userRepository.save(existingUser);
+        return modelMapper.map(savedUser, UserDTO.class);
     }
-
     @Override
     public void deleteUser(String user_id) {
-
+        UUID userId = userHelper.parseUUID(user_id);
+        userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.deleteById(userId);
     }
 
     @Override
     public UserDTO getUserById(String user_id) {
-        UserDTO userDTO = null;
-        return userDTO;
+        UUID userId = userHelper.parseUUID(user_id);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
+    @Transactional
     public Iterable<UserDTO> getAllUsers() {
         return userRepository
                 .findAll()
