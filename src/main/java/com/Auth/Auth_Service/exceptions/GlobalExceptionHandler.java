@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException {
-    public GlobalExceptionHandler(String message) {
-        super(message);
-    }
+//    public GlobalExceptionHandler(String message) {
+//        super(message);
+//    }
 
     @ExceptionHandler(GlobalExceptionHandler.class)
     public ResponseEntity<ErrorDTO>  handleException(ResourceNotFound ex) {
-        ErrorDTO errorDTO = new ErrorDTO(ex.toString(),404,ex.getMessage());
+        ErrorDTO errorDTO = new ErrorDTO(404,ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDTO);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDTO>  handleException(IllegalArgumentException ex) {
-        ErrorDTO errorDTO = new ErrorDTO(ex.toString(),400,ex.getMessage());
+        ErrorDTO errorDTO = new ErrorDTO(400,ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
     }
 }
