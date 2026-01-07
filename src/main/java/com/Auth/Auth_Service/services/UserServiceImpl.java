@@ -54,14 +54,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String user_id) {
         UUID userId = userHelper.parseUUID(user_id);
-        userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found cannot delete"));
         userRepository.deleteById(userId);
     }
 
     @Override
     public UserDTO getUserById(String user_id) {
         UUID userId = userHelper.parseUUID(user_id);
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with id"));
         return modelMapper.map(user, UserDTO.class);
     }
 
