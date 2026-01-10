@@ -15,6 +15,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         User.UserBuilder userBuilder = User.builder();
         UserDetails user1 = userBuilder.username("admin").password("admin").build();
-        return  new InMemoryUserDetailsManager(user1);
+        UserDetails user2 = userBuilder.username("amaanali").password("password").build();
+        return  new InMemoryUserDetailsManager(user1,user2);
     }
 }
