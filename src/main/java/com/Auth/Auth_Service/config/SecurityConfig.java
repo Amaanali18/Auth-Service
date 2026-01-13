@@ -17,6 +17,7 @@ public class SecurityConfig {
         UserDetails user1 = userBuilder.username("admin").password("admin").build();
         UserDetails user2 = userBuilder.username("amaanali").password("password").build();
         UserDetails user3 = userBuilder.username("manager").password("secure-password").build();
-        return  new InMemoryUserDetailsManager(user1,user2,user3);
+        UserDetails user4 = userBuilder.username("administrator").password("hashed-secure-password").build();
+        return  new InMemoryUserDetailsManager(user1,user2,user3,user4);
     }
 }
